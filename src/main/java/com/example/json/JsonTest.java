@@ -62,7 +62,21 @@ public class JsonTest {
             e.printStackTrace();
         }
 
+
+
         String test="A-B-C";
         System.out.println(test.split("-").length);
+
+        String[] pathAry=test.split("-");
+        String regex="";
+        for(int i=0;i<pathAry.length;i++){
+            System.out.println("pathAry["+i+"]="+pathAry[i]);
+            if(regex.length()==0){
+                regex=String.format("^%s$|^%s-",pathAry[i],pathAry[i]);
+            }else{
+                regex=String.format("%s|^%s$|^%s-",regex,pathAry[i],pathAry[i]);
+            }
+        }
+        System.out.println("regex:"+regex);
     }
 }
