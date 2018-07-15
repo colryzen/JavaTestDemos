@@ -18,13 +18,13 @@ public class StringTest {
          System.out.println(IsUrl("http://www.baidu.com"));
          System.out.println(IsUrl("http://www.baidu.com/me/"));
          System.out.println(IsUrl("http://www.baidu.com/me/id?=5&and=9"));
-        System.out.println(IsUrl("http://www.baidu/me/"));
-        System.out.println(IsUrl("http://192.110.11.1:9090/me/"));
-        System.out.println(IsUrl("http://255.255.255.1/me/"));
-        System.out.println(IsUrl("https://255.255.255.1:80/me/?path=&test="));
-        System.out.println(IsUrl("https://255.255.255.1:80/me/dox.asp?path=&test="));
-        System.out.println(IsUrl("https://255.255.255.1:80/me/index.html#?path=&test="));
-        System.out.println(IsUrl("http://1.baidu/me/"));
+         System.out.println(IsUrl("http://www.baidu/me/"));
+         System.out.println(IsUrl("http://192.110.11.1:9090/me/"));
+         System.out.println(IsUrl("http://255.255.255.1/me/"));
+         System.out.println(IsUrl("https://255.255.255.1:80/me/?path=&test="));
+         System.out.println(IsUrl("https://255.255.255.1:80/me/dox.asp?path=&test="));
+         System.out.println(IsUrl("https://255.255.255.1:80/me/index.html#?path=&test="));
+         System.out.println(IsUrl("http://www.baidu/我们/"));
     }
 
 
