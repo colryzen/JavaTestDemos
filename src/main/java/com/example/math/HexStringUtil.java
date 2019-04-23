@@ -117,6 +117,7 @@ public class HexStringUtil {
 		byte [] byteresult = new byte[lenth];
 		System.arraycopy(bytedata, position, byteresult, 0, lenth);
 		return byteresult;
+
 	}
 	
 	
@@ -160,6 +161,8 @@ public class HexStringUtil {
 		byte[] testByte2 = { 1, 2 };
 		byte[] testByte3 = { 3, 4 };
 		String byteStr = bytesToHexString(testByte);
+		System.out.println("args 255 = [" + Integer.toHexString(255) + "]");	;
+
 		System.out.println("bytesToHexString= " + byteStr);
 		byte[] result = hexStringToBytes(byteStr);
 		System.out.println(result[0] + "," + result[1]);

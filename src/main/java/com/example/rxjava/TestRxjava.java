@@ -16,9 +16,10 @@ public class TestRxjava {
     public static void main(String[] args) {
 
 
-        testCreate();
+//        testCreate();
         testOperate();
-        testScheduler();
+  //      testScheduler();
+        testScheduler2();
 
     }
 
@@ -162,7 +163,52 @@ public class TestRxjava {
 
      private static void testOperate(){
 
+
          System.out.println("======testOperate========");
+
+         Observable observable1=   Observable.create(new ObservableOnSubscribe<String>() {
+             @Override
+             public void subscribe(ObservableEmitter<String> observableEmitter) throws Exception {
+                 observableEmitter.onNext("we");
+                 observableEmitter.onNext("test");
+             }
+         });
+
+         observable1.flatMap(new Function<String, ObservableSource<?>>() {
+             ObservableEmitter<Integer> mObservableEmitter;
+             @Override
+             public ObservableSource<?> apply(final String s) throws Exception {
+                 Observable observable1=   Observable.create(new ObservableOnSubscribe<Integer>() {
+                     @Override
+                     public void subscribe(ObservableEmitter<Integer> observableEmitter) throws Exception {
+                        mObservableEmitter=observableEmitter;
+                         mObservableEmitter.onNext(18);
+                         observableEmitter.onNext(15);
+                     }
+                 });
+
+//                 if(s.equals("we")){
+//                     mObservableEmitter.onNext(50);
+//                     mObservableEmitter.onNext(55);
+//                 }else{
+//                     mObservableEmitter.tryOnError(new Throwable("dfa"));
+//                 }
+                 return observable1 ;
+             }
+         }).subscribe(new Consumer<Object>() {
+             @Override
+             public void accept(Object s) throws Exception {
+                 System.out.println("rsult=  s = [" + s + "]" + "s  is  Integer= " + (s instanceof Integer));
+             }
+         }, new Consumer<Throwable>() {
+             @Override
+             public void accept(Throwable throwable) throws Exception {
+                 System.out.println("throwable = [" + throwable + "]");
+             }
+         });
+
+
+
            /////////////////////////
          //map()操作符
 
@@ -182,6 +228,10 @@ public class TestRxjava {
                  System.out.println("integer = [" + integer + "]");
              }
          });
+
+
+
+
 
 
          //////////
@@ -369,11 +419,54 @@ public class TestRxjava {
 
 
 
-
-
-
      }
 
 
+    private  static void testScheduler2(){
+
+        System.out.println("======Scheduler2========");
+
+
+        Observable.create(new ObservableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(ObservableEmitter<Integer> e) throws Exception {
+                System.out.println("subscribe2 所在的线程："+Thread.currentThread().getName());
+                e.onNext(1);
+            }
+        }) .subscribeOn(Schedulers.io())
+                .map(new Function<Integer, Integer>() {
+                    @Override
+                    public Integer apply(Integer integer) throws Exception {
+                        System.out.println("map1 所在的线程："+Thread.currentThread().getName());
+                        return integer+10;
+                    }
+                })
+                .observeOn(Schedulers.computation())
+//                //     .observeOn(Schedulers.single())
+                .map(new Function<Integer, Integer>() {
+                    @Override
+                    public Integer apply(Integer integer) throws Exception {
+                        System.out.println("map2 所在的线程："+Thread.currentThread().getName());
+                        return integer+10;
+                    }
+                })
+//                .observeOn(Schedulers.newThread())
+                .map(new Function<Integer, Integer>() {
+                    @Override
+                    public Integer apply(Integer integer) throws Exception {
+                        System.out.println("map3 所在的线程："+Thread.currentThread().getName());
+                        return integer+10;
+                    }
+                })
+                .subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        System.out.println("Consumer 所在的线程："+Thread.currentThread().getName());
+                        System.out.println("接收到的数据：integer="+integer);
+
+                    }
+                });
+
+    }
 
 }

@@ -6,7 +6,15 @@ public class DepartmentCompartor implements Comparator<Department> {
 
 
     public int compare(Department before, Department after) {
-        return before.level-after.level ;
+        if(before.level>after.level){
+            return  1;
+        }
+
+        if(before.level<after.level){
+            return  -1;
+        }
+
+        return 0 ;
     }
 
 }

@@ -7,12 +7,18 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 
 public class DepartmentParser {
 
 
     public static void main(String[] args) {
-        String departAry="[{\n" +
+
+
+
+
+
+            String departAry="[{\n" +
                 "\t\t\"id\": \"n1de8d3d-91a4-400e-9993-848c8d4fdfe2\",\n" +
                 "\t\t\"departmentPath\": \"云服务事业部-云服务事业部-测试部门新增-阿锐组\",\n" +
                 "\t\t\"duties\": \"码农代表\",\n" +

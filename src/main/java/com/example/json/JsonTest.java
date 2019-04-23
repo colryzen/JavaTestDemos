@@ -8,6 +8,10 @@ import org.json.JSONObject;
 public class JsonTest {
 
     public static void main(String[] args) {
+
+
+
+
         String  jsonStr="{\n" +
                 "    \"departmentId\": [\n" +
                 "        \"52a7f4c5-cf7e-4576-bd60-062b5ac93fdc\"\n" +
