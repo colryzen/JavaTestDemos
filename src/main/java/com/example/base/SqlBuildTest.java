@@ -3,20 +3,71 @@ package com.example.base;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.example.util.StringKeyChangeTool;
 import com.sun.tools.javac.util.StringUtils;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Set;
 
 public class SqlBuildTest {
 
-   public static  String json = " {\n" +
-           "            \"REC_ID\": 683,\n" +
-           "            \"RECDATE\": \"2008-02-01\",\n" +
-           "            \"ITEM_CODE\": \"0019\",\n" +
-           "            \"ITEMNAME\": \"氰化物\",\n" +
-           "            \"THETYPE\": null,\n" +
-           "            \"CHECKVALUE\": -1\n" +
-           "        }";
+   public static  String json = "   {\n" +
+           "            \"DIRECTION\": null,\n" +
+           "            \"RIVER_\": null,\n" +
+           "            \"BOILER_TYPE\": \"\",\n" +
+           "            \"REPORT_STOP\": \"0\",\n" +
+           "            \"LATITUDE\": null,\n" +
+           "            \"ALLOW_PLU_LET\": null,\n" +
+           "            \"PE_ID\": 4724,\n" +
+           "            \"SEQ_NO\": null,\n" +
+           "            \"SYMBOL_STYLE\": null,\n" +
+           "            \"PWD\": null,\n" +
+           "            \"IS_CITY_CONCERNED\": \"0\",\n" +
+           "            \"CONTACT_NUM\": null,\n" +
+           "            \"IS_PUT_HOUR\": null,\n" +
+           "            \"GAF_TYPE_CODE\": null,\n" +
+           "            \"CSN\": \"3507211030011A\",\n" +
+           "            \"HIDDEN_OUTPUT\": \"1\",\n" +
+           "            \"CODE\": null,\n" +
+           "            \"SINGLE_OUTPUT\": \"\",\n" +
+           "            \"NAME\": \"忠跃畜牧发展有限公司\",\n" +
+           "            \"OUTPUT_ID\": 90,\n" +
+           "            \"FUEL_CODE\": null,\n" +
+           "            \"PRODUCT\": null,\n" +
+           "            \"UPDATE_TIME\": null,\n" +
+           "            \"ACTUAL_DAILY_CAPACITY\": null,\n" +
+           "            \"IS_PUT_MIN\": null,\n" +
+           "            \"UPDATE_USER_ID\": null,\n" +
+           "            \"OUTFALL_TYPE\": \"1\",\n" +
+           "            \"GOR_CODE\": null,\n" +
+           "            \"UNIT_TRANSLATE\": 1,\n" +
+           "            \"OPERATOR\": null,\n" +
+           "            \"STATUS\": \"1\",\n" +
+           "            \"ETONG_TRAN\": \"0\",\n" +
+           "            \"SITE_TYPE\": null,\n" +
+           "            \"INSERT_USER_ID\": null,\n" +
+           "            \"PORT\": null,\n" +
+           "            \"AIR_COEFFICIENT\": 1,\n" +
+           "            \"IS_PUT_DAILY\": null,\n" +
+           "            \"BURN_CODE\": null,\n" +
+           "            \"IP_ADDRESS\": null,\n" +
+           "            \"DOWN_TRAN\": \"0\",\n" +
+           "            \"INSERT_TIME\": null,\n" +
+           "            \"STOCK_SHOW\": \"0\",\n" +
+           "            \"ENABLE_STATUS\": \"1\",\n" +
+           "            \"ISEXPORT\": 0,\n" +
+           "            \"CONTACT\": null,\n" +
+           "            \"UP_TRAN\": \"0\",\n" +
+           "            \"IS_AREA_CONCERNED\": \"1\",\n" +
+           "            \"IS_PROVINCE_CONCERNED\": \"0\",\n" +
+           "            \"CYC\": 5,\n" +
+           "            \"POS_\": null,\n" +
+           "            \"FIRST_UPLOAD_DATA\": null,\n" +
+           "            \"LONGITUDE\": null,\n" +
+           "            \"LICENCE_CODE\": null\n" +
+           "        } ";
 
 
 
@@ -165,6 +216,11 @@ public class SqlBuildTest {
 
     public static void main(String[] args) {
 
+
+
+        ArrayList<String>  arrayList =new ArrayList<>();
+
+
          JSONObject jsonObject = JSON.parseObject(json);
         // System.out.println("jsonObj="+jsonObject.toJSONString());
 
@@ -173,20 +229,22 @@ public class SqlBuildTest {
          StringBuffer stringBuffer = new StringBuffer();
 
          for(String key :keySet){
-             stringBuffer.append(" \"").append(key).append("\" text ,");
+             // String jsonKey= StringKeyChangeTool.lineToHump(key);
+             String jsonKey= key;
+             stringBuffer.append(" \"").append(jsonKey).append("\" text ,");
          }
 
-      //   System.out.println( stringBuffer.toString());
+         System.out.println( stringBuffer.toString());
 
          String fromateStr="('402883896458dc8f0164d48d14776fbd', '0107', 'ITEM_CODE', 'value', 'WE_WaterIntakeData', 'monitorCityCode', 'table', '%1$s', “%2$s”)";
 
-        JSONArray jsonArray =JSONArray.parseArray(formJson);
+         JSONArray jsonArray =JSONArray.parseArray(formJson);
 
 
-        for(int i=0;i<jsonArray.size();i++){
-            JSONObject jsonObject1= jsonArray.getJSONObject(i);
-            System.out.println(String.format(fromateStr,jsonObject1.getString("ITEMNAME"),jsonObject1.getString("ITEM_CODE")));
-        }
+//        for(int i=0;i<jsonArray.size();i++){
+//            JSONObject jsonObject1= jsonArray.getJSONObject(i);
+//            System.out.println(String.format(fromateStr,jsonObject1.getString("ITEMNAME"),jsonObject1.getString("ITEM_CODE")));
+//        }
     }
 
 
