@@ -1,6 +1,7 @@
 package com.example.base;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -10,9 +11,13 @@ public class StringTest {
      float sort;
 
     public static void main(String[] args) {
+        //时间格式化处理
+        LocalDateTime dateTime =LocalDateTime.parse("2019-05-30T13:31:32.000");
 
+        System.out.println(dateTime);
         Calendar calendar=Calendar.getInstance();
         calendar.setTime(new Date());
+
         calendar.add(Calendar.HOUR_OF_DAY,48);
         SimpleDateFormat simpleDateFormat= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         System.out.println(simpleDateFormat.format(calendar.getTime()));

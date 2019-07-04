@@ -6,6 +6,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.util.StringKeyChangeTool;
 import com.sun.tools.javac.util.StringUtils;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,61 +18,19 @@ import java.util.Set;
 
 public class SqlBuildTest {
 
-   public static  String json = "   {\n" +
-           "            \"DIRECTION\": null,\n" +
-           "            \"RIVER_\": null,\n" +
-           "            \"BOILER_TYPE\": \"\",\n" +
-           "            \"REPORT_STOP\": \"0\",\n" +
-           "            \"LATITUDE\": null,\n" +
-           "            \"ALLOW_PLU_LET\": null,\n" +
-           "            \"PE_ID\": 4724,\n" +
-           "            \"SEQ_NO\": null,\n" +
-           "            \"SYMBOL_STYLE\": null,\n" +
-           "            \"PWD\": null,\n" +
-           "            \"IS_CITY_CONCERNED\": \"0\",\n" +
-           "            \"CONTACT_NUM\": null,\n" +
-           "            \"IS_PUT_HOUR\": null,\n" +
-           "            \"GAF_TYPE_CODE\": null,\n" +
-           "            \"CSN\": \"3507211030011A\",\n" +
-           "            \"HIDDEN_OUTPUT\": \"1\",\n" +
-           "            \"CODE\": null,\n" +
-           "            \"SINGLE_OUTPUT\": \"\",\n" +
-           "            \"NAME\": \"忠跃畜牧发展有限公司\",\n" +
-           "            \"OUTPUT_ID\": 90,\n" +
-           "            \"FUEL_CODE\": null,\n" +
-           "            \"PRODUCT\": null,\n" +
-           "            \"UPDATE_TIME\": null,\n" +
-           "            \"ACTUAL_DAILY_CAPACITY\": null,\n" +
-           "            \"IS_PUT_MIN\": null,\n" +
-           "            \"UPDATE_USER_ID\": null,\n" +
-           "            \"OUTFALL_TYPE\": \"1\",\n" +
-           "            \"GOR_CODE\": null,\n" +
-           "            \"UNIT_TRANSLATE\": 1,\n" +
-           "            \"OPERATOR\": null,\n" +
-           "            \"STATUS\": \"1\",\n" +
-           "            \"ETONG_TRAN\": \"0\",\n" +
-           "            \"SITE_TYPE\": null,\n" +
-           "            \"INSERT_USER_ID\": null,\n" +
-           "            \"PORT\": null,\n" +
-           "            \"AIR_COEFFICIENT\": 1,\n" +
-           "            \"IS_PUT_DAILY\": null,\n" +
-           "            \"BURN_CODE\": null,\n" +
-           "            \"IP_ADDRESS\": null,\n" +
-           "            \"DOWN_TRAN\": \"0\",\n" +
-           "            \"INSERT_TIME\": null,\n" +
-           "            \"STOCK_SHOW\": \"0\",\n" +
-           "            \"ENABLE_STATUS\": \"1\",\n" +
-           "            \"ISEXPORT\": 0,\n" +
-           "            \"CONTACT\": null,\n" +
-           "            \"UP_TRAN\": \"0\",\n" +
-           "            \"IS_AREA_CONCERNED\": \"1\",\n" +
-           "            \"IS_PROVINCE_CONCERNED\": \"0\",\n" +
-           "            \"CYC\": 5,\n" +
-           "            \"POS_\": null,\n" +
-           "            \"FIRST_UPLOAD_DATA\": null,\n" +
+   public static  String json = "  {\n" +
+           "            \"ENTERID\": \"85e16d45-3a65-41c2-8e71-3ca61980d9c8\",\n" +
+           "            \"CODE_REGION\": \"350700000000\",\n" +
+           "            \"STANDENTERID\": \"0b8e1568-b51b-44ae-af53-6d4207363573\",\n" +
+           "            \"DATASOURCE\": \"国家排污许可证\",\n" +
+           "            \"YEAR\": 2018,\n" +
+           "            \"ENTERADDRESS\": \"南平市延平区太平镇南溪村\",\n" +
+           "            \"ENTERNAME\": \"南平恒富纸业有限公司\",\n" +
+           "            \"PKID\": \"2018GJPWXKZ_85e16d45-3a65-41c2-8e71-3ca61980d9c8\",\n" +
            "            \"LONGITUDE\": null,\n" +
-           "            \"LICENCE_CODE\": null\n" +
-           "        } ";
+           "            \"LATITUDE\": null,\n" +
+           "            \"UPDATETIME\": \"2018-03-23 11:57:14\"\n" +
+           "        }";
 
 
 
@@ -214,9 +177,87 @@ public class SqlBuildTest {
            "}\n" +
            "]";
 
+
+
+
+
+   String  columns="ID\n" +
+           "OBJECT_NAME\n" +
+           "BELONG_AREA_ID\n" +
+           "BELONG_AREA_NAME\n" +
+           "ADDRESS\n" +
+           "POWER_AREA_ID\n" +
+           "POWER_AREA_NAME\n" +
+           "GIS_COORDINATE_X\n" +
+           "GIS_COORDINATE_Y\n" +
+           "LICENSE_NO\n" +
+           "ORG_CODE\n" +
+           "SOCIAL_CREDIT_CODE\n" +
+           "INDUSTRY_TYPE_CODE\n" +
+           "INDUSTRY_TYPE_NAME\n" +
+           "LEVEL_NAME\n" +
+           "LEGAL_PERSON\n" +
+           "LEGAL_PHONE\n" +
+           "CHARGE_PERSON\n" +
+           "CHARGE_PERSON_PHONE\n" +
+           "IS_KEY_SOURCE\n" +
+           "IS_ONLINE_MONITOR\n" +
+           "PRODUCT_STATE_NAME\n" +
+           "IS_SOLIDWASTE_OPERUNIT\n" +
+           "IS_SOLIDWASTE_CREATEUNIT\n" +
+           "IS_RISK_SOURCE\n" +
+           "IS_OUTFALL_STANDARD\n" +
+           "PERSON_NATURE_NAME\n" +
+           "BELONG_LEVEL_CODE\n" +
+           "BELONG_LEVEL_NAME\n" +
+           "IS_LISTED_COMPANY\n" +
+           "STOCK_CODE\n" +
+           "IS_GROUP_COMPANY\n" +
+           "GROUP_COMPANY_NAME\n" +
+           "GROUP_COMPANY_ORGCODE\n" +
+           "GROUP_COMPANY_STOCKCODE\n" +
+           "PERSONCARD_TYPE_NAME\n" +
+           "CARD_NUMBER\n" +
+           "CARD_TYPE_NAME\n" +
+           "IS_SPECIAL_ORG\n" +
+           "MANAGE_ORG_NAME\n" +
+           "TYPE_NAME\n" +
+           "SEX\n" +
+           "DELMARK\n" +
+           "PROTECTED_AREA_DESC\n" +
+           "MAIN_PROTECT_OBJECT\n" +
+           "OBJECT_DESC\n" +
+           "UPDATETIME\n" +
+           "CREATETIME\n" +
+           "DANGER_COEFFICIENT\n" +
+           "RANDOM_STATE\n" +
+           "RANDOM_ATTR_NAME\n" +
+           "LASTUPDATEMAN\n" +
+           "LEGAL_MAN_ID_CARD\n" +
+           "CHARGE_MAN_ID_CARD\n" +
+           "STANDENTERID\n" +
+           "WSCD\n" +
+           "WSNM\n" +
+           "POLLUTION_SOURCE_TYPE\n" +
+           "POLLUTION_SOURCE_TYPE_NAME\n" +
+           "XSLW\n" +
+           "SFFSCSDW\n" +
+           "SFFQCSDW\n" +
+           "SFWFCSDW\n" +
+           "SFWFJYDW\n" +
+           "SYPWXKHYJSGF_CODE\n" +
+           "SYPWXKHYJSGF_NAME\n" +
+           "IS_CANCELLED\n" +
+           "SUPERVISE_DATE\n" +
+           "IS_SUPERVISE\n" +
+           "GIS_COORDINATE_X84\n" +
+           "GIS_COORDINATE_Y84\n";
+
     public static void main(String[] args) {
 
 
+        readLine();
+        int a = 1;
 
         ArrayList<String>  arrayList =new ArrayList<>();
 
@@ -245,7 +286,31 @@ public class SqlBuildTest {
 //            JSONObject jsonObject1= jsonArray.getJSONObject(i);
 //            System.out.println(String.format(fromateStr,jsonObject1.getString("ITEMNAME"),jsonObject1.getString("ITEM_CODE")));
 //        }
+
+
+
     }
+
+
+     private static void readLine(){
+         Path path= Paths.get("/Users/ruankerui/Developer/test/table","2_4_3.txt");
+         try {
+             ArrayList<String> lines= (ArrayList<String>) Files.readAllLines(path);
+             StringBuffer stringBuffer = new StringBuffer();
+
+             for(String key :lines){
+                 // String jsonKey= StringKeyChangeTool.lineToHump(key);
+                 String jsonKey= key.trim();
+                 stringBuffer.append(" \"").append(jsonKey).append("\" text ,");
+             }
+             System.out.println( stringBuffer.toString());
+
+         } catch (IOException e) {
+             e.printStackTrace();
+         }
+
+
+     }
 
 
 }
