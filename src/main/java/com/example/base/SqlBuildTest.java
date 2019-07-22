@@ -14,6 +14,7 @@ import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Set;
 
 public class SqlBuildTest {
@@ -253,10 +254,14 @@ public class SqlBuildTest {
            "GIS_COORDINATE_X84\n" +
            "GIS_COORDINATE_Y84\n";
 
+
+
+
+
     public static void main(String[] args) {
 
-
-        readLine();
+        readLineCreateTable();
+       // readLine();
         int a = 1;
 
         ArrayList<String>  arrayList =new ArrayList<>();
@@ -275,9 +280,9 @@ public class SqlBuildTest {
              stringBuffer.append(" \"").append(jsonKey).append("\" text ,");
          }
 
-         System.out.println( stringBuffer.toString());
+     //    System.out.println( stringBuffer.toString());
 
-         String fromateStr="('402883896458dc8f0164d48d14776fbd', '0107', 'ITEM_CODE', 'value', 'WE_WaterIntakeData', 'monitorCityCode', 'table', '%1$s', “%2$s”)";
+         String fromateStr="(E'8a1e8dbc5b66b092015bccf96ee75194',E'0107',E'LETTERCODE',E'Z_LetterComplaint',E'column',E'letterCode',E'table',E'信件编号'),";
 
          JSONArray jsonArray =JSONArray.parseArray(formJson);
 
@@ -309,6 +314,78 @@ public class SqlBuildTest {
              e.printStackTrace();
          }
 
+     }
+
+     private static void readLineCreateTable(){
+         Path path= Paths.get("/Users/ruankerui/Developer/test/table","2_9_0.txt");
+         try {
+             ArrayList<String> lines= (ArrayList<String>) Files.readAllLines(path);
+             StringBuffer stringBuffer = new StringBuffer();
+
+             for(String key :lines){
+                 // String jsonKey= StringKeyChangeTool.lineToHump(key);
+                 String jsonKey= key.trim();
+                 stringBuffer.append(" \"").append(keyChange(jsonKey)).append("\" text ,");
+             }
+             System.out.println( stringBuffer.toString());
+
+
+             String fromateStr="(E'8a1e8dbc5b66b092015bccf96ee75194',E'0107',E'%1$s',E'Z_LetterComplaint',E'column',E'%2$s',E'table'),";
+
+             StringBuffer insertBuffer = new StringBuffer();
+
+             for(String key :lines){
+                 // String jsonKey= StringKeyChangeTool.lineToHump(key);
+                 String jsonKey= key.trim();
+                 insertBuffer.append(String.format(fromateStr,jsonKey.toUpperCase(),keyChange(jsonKey)));
+             }
+             System.out.println(insertBuffer.toString());
+
+         } catch (IOException e) {
+             e.printStackTrace();
+         }
+     }
+
+
+
+
+     private static String keyChange(String key){
+         HashMap map =new HashMap();
+         map.put("LETTERCODE","complaintCode");
+         // 案件来源
+         map.put("RESOURCEL","complaintSource");
+         // 污染源类型
+         map.put("POLLUTIONTYPE","pollutionType");
+         //举报人
+         map.put("PETITIONER","complainantName");
+         // 举报人联系方式
+         map.put("PETITIONERTEL","complainantLinkMethod");
+         // 举报人地址
+         map.put("PETITIONERADDR","complainantAddr");
+         // 举报内容
+         map.put("PETICONTENT","complaintContent");
+         // 被举报单位名称
+         map.put("PENAME","enterpriseName");
+         // 被举报单位地址
+         map.put("PEADDR","address");
+         // 被举报单位所在区县
+         map.put("POLLUTIONCOUNTY","regionName");
+         // 投诉时间(登记时间)
+         map.put("INSERTTIME","complaintTime");
+         // 回复时间（办理时间)
+         map.put("PETITIONTIME","replyTime");
+         // 是否受理 1受理 0未受理
+         map.put("ISACCEPT","isAccept");
+         // 转办状态(转办状态（0，转办；1，市级督办；2，省级督办）)
+         map.put("HANLDTYPE","transferDealStatus");
+         // 反馈状态(反馈状态)
+         map.put("FEEDBACKSTATUS","feedbackStatus");
+
+         if(map.containsKey(key.toUpperCase())){
+             return  (String)map.get(key.toUpperCase());
+         }else{
+             return  key;
+         }
 
      }
 
