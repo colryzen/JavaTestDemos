@@ -1,7 +1,9 @@
 package com.example.base;
 
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.temporal.TemporalField;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -11,11 +13,37 @@ public class StringTest {
      float sort;
 
     public static void main(String[] args) {
+
+        String lng= "119.93748 °E";
+        String lat= "26.37993 °N";
+
+        if(lat!=null&&lat.length()>=10){
+            lat=lat.replace("°E","").trim();
+        }
+        if(lng!=null&&lng.length()>=10){
+            lng=lng.replace("°E","").trim();
+        }
+        System.out.println("lat="+lat+",lng="+lng);
+
+
+
         //时间格式化处理
-        LocalDateTime dateTime =LocalDateTime.parse("2019-05-30T13:31:32.000");
+        LocalDateTime dateTime =LocalDateTime.parse("2019-03-11T13:31:32.000");
+        // 获取秒
+        Instant instant = Instant.now();
+        long currentSecond = instant.getEpochSecond();
+        System.out.println( "MIN====="+ currentSecond/60);
+
+        System.out.println("dayOfYear="+dateTime.getDayOfYear());
+        int pluse=dateTime.getDayOfYear()%7==0?0:1;
+        int weekTimes= ((int)dateTime.getDayOfYear()/7)+pluse;
+        System.out.println("weekTimes="+weekTimes);
+        System.out.println("getDayOfWeek="+dateTime.getDayOfWeek());
+
 
         System.out.println(dateTime);
         Calendar calendar=Calendar.getInstance();
+
         calendar.setTime(new Date());
 
         calendar.add(Calendar.HOUR_OF_DAY,48);

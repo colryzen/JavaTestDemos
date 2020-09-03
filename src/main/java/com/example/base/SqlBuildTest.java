@@ -12,25 +12,44 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.*;
 
 public class SqlBuildTest {
 
    public static  String json = "  {\n" +
-           "            \"ENTERID\": \"85e16d45-3a65-41c2-8e71-3ca61980d9c8\",\n" +
-           "            \"CODE_REGION\": \"350700000000\",\n" +
-           "            \"STANDENTERID\": \"0b8e1568-b51b-44ae-af53-6d4207363573\",\n" +
-           "            \"DATASOURCE\": \"国家排污许可证\",\n" +
-           "            \"YEAR\": 2018,\n" +
-           "            \"ENTERADDRESS\": \"南平市延平区太平镇南溪村\",\n" +
-           "            \"ENTERNAME\": \"南平恒富纸业有限公司\",\n" +
-           "            \"PKID\": \"2018GJPWXKZ_85e16d45-3a65-41c2-8e71-3ca61980d9c8\",\n" +
-           "            \"LONGITUDE\": null,\n" +
-           "            \"LATITUDE\": null,\n" +
-           "            \"UPDATETIME\": \"2018-03-23 11:57:14\"\n" +
+           "            \"DQ_UCODE\": \"350700\",\n" +
+           "            \"YEARMONTH\": \"2019-11-22\",\n" +
+           "            \"STANDNAME\": \"2016年起地表水（GB3838-2002）（小流域）\",\n" +
+           "            \"LONGITUDE\": 117.7786,\n" +
+           "            \"CHECKCLASS\": \"省控\",\n" +
+           "            \"BNAME\": \"闽江流域\",\n" +
+           "            \"POINTTYPE\": \"考核\",\n" +
+           "            \"ESTUARY\": \"非\",\n" +
+           "            \"CHECKYEAR\": 2019,\n" +
+           "            \"UCODE\": \"350700\",\n" +
+           "            \"PNAME\": \"漫水桥\",\n" +
+           "            \"REC_ID\": \"13832\",\n" +
+           "            \"RECDATE\": \"2019-12-10\",\n" +
+           "            \"FREQUENCY\": null,\n" +
+           "            \"THETYPE\": 2,\n" +
+           "            \"RCODE\": \"317\",\n" +
+           "            \"ISADDCHECK\": \"非\",\n" +
+           "            \"TOTALCLASS\": 3,\n" +
+           "            \"REPRESENT\": \"是\",\n" +
+           "            \"STREAM\": null,\n" +
+           "            \"CBITEMS\": null,\n" +
+           "            \"PLACE\": \"中中\",\n" +
+           "            \"FEATURES\": null,\n" +
+           "            \"CHECKMONTH\": 11,\n" +
+           "            \"OUTFALL\": \"是\",\n" +
+           "            \"UNAME\": \"南平市\",\n" +
+           "            \"BORDER\": \"非交界\",\n" +
+           "            \"DQ_UNAME\": \"南平市\",\n" +
+           "            \"RNAME\": \"仁寿溪\",\n" +
+           "            \"PCODE\": \"429\",\n" +
+           "            \"POINT\": \"非\",\n" +
+           "            \"LATITUDE\": 26.9289,\n" +
+           "            \"CONTROL\": \"非\"\n" +
            "        }";
 
 
@@ -260,13 +279,6 @@ public class SqlBuildTest {
 
     public static void main(String[] args) {
 
-        readLineCreateTable();
-       // readLine();
-        int a = 1;
-
-        ArrayList<String>  arrayList =new ArrayList<>();
-
-
          JSONObject jsonObject = JSON.parseObject(json);
         // System.out.println("jsonObj="+jsonObject.toJSONString());
 
@@ -276,36 +288,25 @@ public class SqlBuildTest {
 
          for(String key :keySet){
              // String jsonKey= StringKeyChangeTool.lineToHump(key);
-             String jsonKey= key;
+              String jsonKey= key;
              stringBuffer.append(" \"").append(jsonKey).append("\" text ,");
          }
 
-     //    System.out.println( stringBuffer.toString());
-
-         String fromateStr="(E'8a1e8dbc5b66b092015bccf96ee75194',E'0107',E'LETTERCODE',E'Z_LetterComplaint',E'column',E'letterCode',E'table',E'信件编号'),";
-
-         JSONArray jsonArray =JSONArray.parseArray(formJson);
-
-
-//        for(int i=0;i<jsonArray.size();i++){
-//            JSONObject jsonObject1= jsonArray.getJSONObject(i);
-//            System.out.println(String.format(fromateStr,jsonObject1.getString("ITEMNAME"),jsonObject1.getString("ITEM_CODE")));
-//        }
-
+         System.out.println( stringBuffer.toString());
 
 
     }
 
 
      private static void readLine(){
-         Path path= Paths.get("/Users/ruankerui/Developer/test/table","2_4_3.txt");
+         Path path= Paths.get("/Users/ruankerui/Developer/test/table","2.3.txt");
          try {
              ArrayList<String> lines= (ArrayList<String>) Files.readAllLines(path);
              StringBuffer stringBuffer = new StringBuffer();
 
              for(String key :lines){
-                 // String jsonKey= StringKeyChangeTool.lineToHump(key);
-                 String jsonKey= key.trim();
+                  String jsonKey= StringKeyChangeTool.lineToHump(key);
+                // String jsonKey= key.trim();
                  stringBuffer.append(" \"").append(jsonKey).append("\" text ,");
              }
              System.out.println( stringBuffer.toString());
