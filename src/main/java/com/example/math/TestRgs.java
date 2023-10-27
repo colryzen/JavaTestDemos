@@ -9,6 +9,30 @@ public class TestRgs {
 		System.out.println(isPhone("15712344321"));
 		String  a16=Integer.toHexString(25);
 		System.out.println("16hex="+a16);
+
+        String rex="([0-9]+)";
+
+		Pattern p = Pattern.compile(rex);
+		Matcher matcher = p.matcher("123abc456def");
+		System.out.println("matcher count="+matcher.groupCount());
+		while (matcher.find()){
+			String r=matcher.group();
+			System.out.println("matcher r="+r);
+		}
+
+	    final String rex2="([a-z]+)(\\d+)";
+
+		Pattern p2 = Pattern.compile(rex2);
+		Matcher m = p2.matcher("java265.com");
+		System.out.println("find="+m.find()); // 匹配java265
+		System.out.println("groupCount="+m.groupCount()); // 返回2,因为有2组
+		System.out.println(m.start(1)); // 返回0 返回第一组匹配到的子字符串在字符串中的索引号
+		System.out.println(m.start(2)); // 返回4
+		System.out.println(m.end(1)); // 返回4 返回第一组匹配到的子字符串的最后一个字符在字符串中的索引位置.
+		System.out.println(m.end(2)); // 返回7
+		System.out.println(m.group(1)); // 返回java,返回第一组匹配到的子字符串
+		System.out.println(m.group(2)); // 返回265,返回第二组匹配到的子字符串
+
 	}
 	
 	
