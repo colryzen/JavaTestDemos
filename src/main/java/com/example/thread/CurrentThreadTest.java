@@ -1,7 +1,9 @@
 package com.example.thread;
 
+import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
@@ -13,15 +15,20 @@ public class CurrentThreadTest {
 
     private static AtomicInteger i = new AtomicInteger(0);
 
+    private static AtomicInteger allRuner = new AtomicInteger(0);
+
+    private static CountDownLatch countDownLatch = new CountDownLatch(10);
 
     public static void main(String[] args) throws InterruptedException {
 
-        testAtomic();
-        testAdder();
-
-        testAtomicFieldUpdater();
-
-        testCookingAndConsumer();
+        testRunRaiser();
+    //    testRuner();
+//        testAtomic();
+//        testAdder();
+//
+//        testAtomicFieldUpdater();
+//
+//        testCookingAndConsumer();
 
 
     }
@@ -131,6 +138,52 @@ public class CurrentThreadTest {
     }
 
 
+    //现实案例:相当于10个人赛跑,需要等待10个人都跑完之后,才能公布所有人的成绩.
+    public static  void testRunRaiser(){
+
+        for (int i = 0; i < 10; ++i) {
+            Thread thread = new Thread(() -> {
+                System.out.println(Thread.currentThread().getName() + ":出发");
+                try {
+                    Random rand = new Random();
+                    int randomInt = rand.nextInt(2);
+                    TimeUnit.SECONDS.sleep(randomInt+1);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                //执行完毕,计数减一
+                int ok= allRuner.incrementAndGet();
+                System.out.println("==> 运动员：到达 "+ok + " 位");
+                if(ok==10){
+                    System.out.println("==== 比赛结束！！！====");
+                }
+                //走到这里说明这个线程已经结束
+            }, "线程"+i);
+            thread.start();
+        }
+    }
+
+    //现实案例:相当于10个人赛跑,需要等待10个人都跑完之后,才能公布所有人的成绩.
+    public  static  void testRuner() throws InterruptedException {
+        System.out.println("=== 测试多线程结束===");
+        for (int i = 0; i < 10; ++i) {
+            Thread thread = new Thread(() -> {
+                System.out.println(Thread.currentThread().getName() + ":出发");
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                //执行完毕,计数减一
+                countDownLatch.countDown();
+                //走到这里说明这个线程已经结束
+            }, "线程"+i);
+            thread.start();
+        }
+        //等待所有的线程执行完成之后再继续执行下面的内容
+        countDownLatch.await();
+        System.out.println("所有的线程执行完毕");
+    }
 
 
 
