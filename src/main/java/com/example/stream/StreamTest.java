@@ -1,13 +1,12 @@
 package com.example.stream;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -15,14 +14,16 @@ import java.util.stream.Stream;
 /**
  *  演示Java 8 Stream的使用
  */
-
+@Slf4j
 public class StreamTest {
-
+    //////////
     //知识点参考文章
-    // https://blog.csdn.net/MinggeQingchun/article/details/123184273
+    //1.  https://blog.csdn.net/MinggeQingchun/article/details/123184273
+    //2.  https://blog.csdn.net/qq_45443475/article/details/131437679
 
     public static void main(String[] args) {
-       // createStream();
+        log.info("==> StreamTest={}","we are OK!");
+        createStream();
 
         List<User> userList=getUserList();
         List<String> mapUserList = userList.stream().map(user -> user.getName() + "用户").collect(Collectors.toList());
@@ -30,10 +31,15 @@ public class StreamTest {
 
         userList.stream().flatMap(user -> Arrays.stream(user.getCity().split(","))).forEach(System.out::println);
         streamOp();
+
+        //
+        testReduce();
+
     }
 
 
     private static void createStream(){
+        System.out.println("-------- =====createStream()===== -------------");
         //1、Stream创建
         Stream<Integer> stream1 = Stream.of(1,2,3,4,5);
         //2.Collection集合创建（应用中最常用的一种）
@@ -63,10 +69,16 @@ public class StreamTest {
         streamPrint(iterateStream);
         System.out.println("==========");
         streamPrint(generateStream);
+
+        //6. 范围创建
+        System.out.println("=====Range Create=====");
+        IntStream.range(1, 3).forEach(System.out::println);
+        IntStream.rangeClosed(1, 3).forEach(System.out::println);
     }
 
 
     private static void streamOp(){
+        System.out.println("-------- =====streamOp()===== -------------");
         List<User> userList=getUserList();
         //1、filter：输出ID大于6的user对象
         List<User> filetrUserList = userList.stream().filter(user -> user.getId() > 6).collect(Collectors.toList());
@@ -115,6 +127,38 @@ public class StreamTest {
 
         return userList;
     }
+
+
+
+    private static void testReduce() {
+        System.out.println("-------- =====testReduce()===== -------------");
+        //求和 sum
+        List<Integer> integers = Arrays.asList(1, 2, 3, 4, 5);
+        // 没有起始值时返回为Optional类型
+        Optional<Integer> sumOptional = integers.stream().reduce(Integer::sum);
+        System.out.println(sumOptional.get()); //15
+
+        // 可以给一个起始种子值
+        Integer sumReduce = integers.stream().reduce(10, Integer::sum);
+        System.out.println(sumReduce); //15
+
+        //直接用sum方法
+        Integer sum = integers.stream().mapToInt(i -> i).sum();
+        System.out.println(sum); //15
+
+        Integer reduce = Stream.of(1, 2, 3).parallel().reduce(
+                4,
+                (integer, integer2) -> integer + integer2,
+                (integer, integer2) -> integer + integer2);
+        System.out.println(reduce); //18
+
+        System.out.println("=============rangeClosed===============");
+        Integer sumI= IntStream.rangeClosed(1, 10)
+                .peek(System.out::println)
+                .reduce(0, Integer::sum);
+        System.out.println(sumI);
+    }
+
 
 
     private static void streamPrint(Stream stream){
